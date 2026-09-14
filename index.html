@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>사진 방명록</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <main class="guestbook-app">
+    <header class="guestbook-header">
+      <img
+        class="guestbook-logo"
+        src="./assets/logo/logo.png"
+        alt="희망의 과학싹잔치 로고"
+      >
+
+      <h1 id="guestbookTitle" class="guestbook-title">
+        PHOTO GUESTBOOK
+      </h1>
+
+      <p class="guestbook-subtitle">
+        함께 만든 순간들이 순서대로 기록됩니다.
+      </p>
+
+      <div class="guestbook-summary" aria-live="polite">
+        <span id="totalCount">등록된 사진 0장</span>
+        <span id="lastUpdated">불러오는 중...</span>
+      </div>
+    </header>
+
+    <section class="gallery-section" aria-labelledby="galleryTitle">
+      <h2 id="galleryTitle" class="sr-only">사진 방명록 목록</h2>
+
+      <div id="loadingState" class="state-box">
+        방명록을 불러오고 있습니다.
+      </div>
+
+      <div id="errorState" class="state-box error hidden">
+        <p>방명록을 불러오지 못했습니다.</p>
+        <button id="retryLoadButton" type="button">다시 시도</button>
+      </div>
+
+      <div id="emptyState" class="state-box hidden">
+        아직 등록된 사진이 없습니다.<br>
+        첫 번째 사진을 남겨 주세요.
+      </div>
+
+      <div id="guestbookGrid" class="guestbook-grid"></div>
+
+      <div class="load-more-wrap">
+        <button id="loadMoreButton" class="load-more-button hidden" type="button">
+          이전 사진 더 보기
+        </button>
+      </div>
+    </section>
+
+    <footer class="guestbook-footer">
+      사용자가 직접 방명록 등록에 동의한 사진만 표시됩니다.
+    </footer>
+  </main>
+
+  <div id="viewerModal" class="viewer-modal" aria-hidden="true">
+    <div id="viewerBackdrop" class="viewer-backdrop">
+      <section class="viewer-dialog" role="dialog" aria-modal="true" aria-label="방명록 사진 크게 보기">
+        <button id="viewerCloseButton" class="viewer-close-button" type="button" aria-label="닫기">×</button>
+        <iframe id="viewerFrame" class="viewer-frame" title="방명록 사진"></iframe>
+        <p id="viewerMessage" class="viewer-message"></p>
+      </section>
+    </div>
+  </div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
