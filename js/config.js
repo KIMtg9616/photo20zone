@@ -1,6 +1,6 @@
 export const GUESTBOOK_CONFIG = {
   // Google Apps Script 웹 앱 배포 URL(/exec)을 입력하세요.
-  webAppUrl: "PASTE_APPS_SCRIPT_WEB_APP_URL_HERE",
+  webAppUrl: "script.google.com/macros/s/AKfycbxJARhWep9Ra5xas5uPu8yZo5HFkN8zDD_A-ypYtSg_EFvTw9ctWkxTOr5NMZL_ltJT/exec",
 
   title: "PHOTO GUESTBOOK",
 
