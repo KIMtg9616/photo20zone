@@ -28,7 +28,7 @@ export const GUESTBOOK_CONFIG = {
    글자/카드 가독성을 위해 0.30~0.55 정도를 권장합니다.
   */
   backgroundImage: {
-    enabled: false,
+    enabled: true,
     src: "./assets/background/background0.jpg",
     size: "cover",
     position: "center center",
