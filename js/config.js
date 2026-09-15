@@ -29,7 +29,7 @@ export const GUESTBOOK_CONFIG = {
   */
   backgroundImage: {
     enabled: false,
-    src: "./assets/background/background.jpg",
+    src: "./assets/background/background0.jpg",
     size: "cover",
     position: "center center",
     repeat: "no-repeat",
