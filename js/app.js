@@ -46,6 +46,10 @@ const viewerMessage =
   document.getElementById("viewerMessage");
 
 
+const fullscreenButton =
+  document.getElementById("fullscreenButton");
+
+
 const entriesBySequence =
   new Map();
 
@@ -360,6 +364,161 @@ function updateSummary(total) {
 }
 
 
+/* ============================================================
+   GitHub에 업로드한 이미지를 방명록 배경으로 사용
+   ============================================================ */
+
+function applyBackgroundImage() {
+  const background =
+    GUESTBOOK_CONFIG.backgroundImage || {};
+
+  const enabled =
+    background.enabled === true &&
+    String(background.src || "").trim() !== "";
+
+  document.body.classList.toggle(
+    "has-guestbook-background",
+    enabled
+  );
+
+  if (!enabled) {
+    document.body.style.removeProperty("background-image");
+    return;
+  }
+
+  const source =
+    String(background.src).trim();
+
+  document.body.style.backgroundImage =
+    `url(${JSON.stringify(source)})`;
+
+  document.body.style.setProperty(
+    "--guestbook-bg-size",
+    String(background.size || "cover")
+  );
+
+  document.body.style.setProperty(
+    "--guestbook-bg-position",
+    String(background.position || "center center")
+  );
+
+  document.body.style.setProperty(
+    "--guestbook-bg-repeat",
+    String(background.repeat || "no-repeat")
+  );
+
+  document.body.style.setProperty(
+    "--guestbook-bg-attachment",
+    String(background.attachment || "fixed")
+  );
+
+  const opacity =
+    Math.min(
+      1,
+      Math.max(
+        0,
+        Number(background.overlayOpacity ?? 0.42)
+      )
+    );
+
+  document.body.style.setProperty(
+    "--guestbook-bg-overlay-opacity",
+    String(opacity)
+  );
+}
+
+
+/* ============================================================
+   전체화면
+   ============================================================ */
+
+function getFullscreenElement() {
+  return (
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    null
+  );
+}
+
+
+function canUseFullscreen() {
+  const root = document.documentElement;
+
+  return Boolean(
+    root.requestFullscreen ||
+    root.webkitRequestFullscreen
+  );
+}
+
+
+async function enterFullscreen() {
+  const root = document.documentElement;
+
+  if (root.requestFullscreen) {
+    await root.requestFullscreen();
+    return;
+  }
+
+  if (root.webkitRequestFullscreen) {
+    root.webkitRequestFullscreen();
+  }
+}
+
+
+async function exitFullscreen() {
+  if (document.exitFullscreen) {
+    await document.exitFullscreen();
+    return;
+  }
+
+  if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  }
+}
+
+
+async function toggleFullscreen() {
+  try {
+    if (getFullscreenElement()) {
+      await exitFullscreen();
+    }
+    else {
+      await enterFullscreen();
+    }
+  }
+  catch (error) {
+    console.warn("전체화면 전환 실패:", error);
+  }
+}
+
+
+function updateFullscreenButton() {
+  if (!fullscreenButton) {
+    return;
+  }
+
+  const active =
+    Boolean(getFullscreenElement());
+
+  document.body.classList.toggle(
+    "fullscreen-active",
+    active
+  );
+
+  fullscreenButton.setAttribute(
+    "aria-label",
+    active
+      ? "전체화면 종료"
+      : "전체화면으로 보기"
+  );
+
+  fullscreenButton.title =
+    active
+      ? "전체화면 종료"
+      : "전체화면";
+}
+
+
 function formatDate(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
@@ -411,8 +570,55 @@ function closeViewer() {
 }
 
 
+const configuredTitle =
+  GUESTBOOK_CONFIG.title ||
+  "희망의 과학싹잔치 20주년 방명록";
+
+
 titleElement.textContent =
-  GUESTBOOK_CONFIG.title || "PHOTO GUESTBOOK";
+  configuredTitle;
+
+
+document.title =
+  configuredTitle;
+
+
+applyBackgroundImage();
+
+
+if (fullscreenButton) {
+  const supported =
+    canUseFullscreen();
+
+  fullscreenButton.disabled =
+    !supported;
+
+  if (!supported) {
+    fullscreenButton.title =
+      "이 브라우저에서는 전체화면을 지원하지 않습니다.";
+  }
+  else {
+    fullscreenButton.addEventListener(
+      "click",
+      toggleFullscreen
+    );
+  }
+}
+
+
+document.addEventListener(
+  "fullscreenchange",
+  updateFullscreenButton
+);
+
+
+document.addEventListener(
+  "webkitfullscreenchange",
+  updateFullscreenButton
+);
+
+
+updateFullscreenButton();
 
 retryLoadButton.addEventListener("click", initialLoad);
 loadMoreButton.addEventListener("click", loadMore);

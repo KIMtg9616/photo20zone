@@ -1,0 +1,28 @@
+방명록 사이트 UI 업데이트
+
+1. 우측 하단 전체화면 버튼 추가
+   - 지원 브라우저에서 전체화면 진입/종료
+   - 전체화면 상태에 따라 아이콘 자동 변경
+
+2. 상단 타이틀 변경
+   - 희망의 과학싹잔치 20주년 방명록
+
+3. 상단 로고 확대
+   - 모바일/PC에서 기존보다 넓고 크게 표시
+   - 가로 화면에서는 화면 높이를 고려해 자동 축소
+
+4. GitHub 업로드 이미지 배경 지원
+   js/config.js의 backgroundImage에서 설정
+
+   backgroundImage: {
+     enabled: true,
+     src: "./assets/background/background.jpg",
+     size: "cover",
+     position: "center center",
+     repeat: "no-repeat",
+     attachment: "fixed",
+     overlayOpacity: 0.42
+   }
+
+   배경 이미지 파일을 assets/background/background.jpg에 업로드하거나
+   src에 직접 이미지 URL을 입력할 수 있습니다.

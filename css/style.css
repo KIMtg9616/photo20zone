@@ -322,3 +322,139 @@ input {
     max-height: 94dvh;
   }
 }
+
+/* ============================================================
+   방명록 배경 이미지 / 확대된 상단 로고 / 전체화면 버튼
+   ============================================================ */
+
+body {
+  position: relative;
+  isolation: isolate;
+  background-color: #f4f7fb;
+  background-size: var(--guestbook-bg-size, cover);
+  background-position: var(--guestbook-bg-position, center center);
+  background-repeat: var(--guestbook-bg-repeat, no-repeat);
+  background-attachment: var(--guestbook-bg-attachment, fixed);
+}
+
+body.has-guestbook-background::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: rgba(244, 247, 251, var(--guestbook-bg-overlay-opacity, 0.42));
+}
+
+.guestbook-app {
+  position: relative;
+  z-index: 1;
+}
+
+/* 기존보다 좌우 폭과 높이를 넓혀 로고를 더 크게 표시합니다. */
+.guestbook-logo {
+  width: min(96%, 690px);
+  height: clamp(92px, 14vw, 132px);
+  margin-bottom: 8px;
+}
+
+.guestbook-title {
+  font-size: clamp(27px, 5.5vw, 48px);
+  word-break: keep-all;
+}
+
+.fullscreen-button {
+  position: fixed;
+  right: max(16px, calc(12px + env(safe-area-inset-right)));
+  bottom: max(16px, calc(12px + env(safe-area-inset-bottom)));
+  z-index: 2500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.88);
+  color: #ffffff;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.24);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.fullscreen-button:active {
+  transform: scale(0.95);
+}
+
+.fullscreen-button:focus-visible {
+  outline: 3px solid rgba(59, 130, 246, 0.45);
+  outline-offset: 3px;
+}
+
+.fullscreen-button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.fullscreen-icon {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.fullscreen-exit-icon {
+  display: none;
+}
+
+body.fullscreen-active .fullscreen-enter-icon {
+  display: none;
+}
+
+body.fullscreen-active .fullscreen-exit-icon {
+  display: block;
+}
+
+/* 전체화면 상태에서도 콘텐츠 폭과 배치는 기존 그리드 규칙을 유지합니다. */
+:fullscreen body,
+:-webkit-full-screen body {
+  width: 100%;
+  min-height: 100%;
+}
+
+@media (max-width: 560px) {
+  .guestbook-logo {
+    width: min(98%, 560px);
+    height: clamp(88px, 24vw, 116px);
+  }
+
+  .fullscreen-button {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .guestbook-logo {
+    width: min(86%, 560px);
+    height: 68px;
+    margin-bottom: 2px;
+  }
+
+  .guestbook-title {
+    font-size: clamp(24px, 4vw, 32px);
+  }
+
+  .fullscreen-button {
+    width: 46px;
+    height: 46px;
+    right: max(12px, calc(8px + env(safe-area-inset-right)));
+    bottom: max(12px, calc(8px + env(safe-area-inset-bottom)));
+  }
+}
