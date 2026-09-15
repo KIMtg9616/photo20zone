@@ -458,3 +458,69 @@ body.fullscreen-active .fullscreen-exit-icon {
     bottom: max(12px, calc(8px + env(safe-area-inset-bottom)));
   }
 }
+
+/* ============================================================
+   2026-09-15: 와이드 데스크톱 레이아웃
+   ------------------------------------------------------------
+   - 기존 모바일/태블릿 구성은 유지합니다.
+   - 넓은 화면에서는 좌우 여백을 과도하게 남기지 않고 갤러리가
+     브라우저 폭을 적극적으로 사용하도록 확장합니다.
+   - 화면 폭에 따라 4 → 5 → 6열로 자연스럽게 늘어납니다.
+   ============================================================ */
+
+.guestbook-app {
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  padding-left: clamp(16px, 3vw, 56px);
+  padding-right: clamp(16px, 3vw, 56px);
+}
+
+.gallery-section,
+.guestbook-grid {
+  width: 100%;
+}
+
+/* 일반 데스크톱에서는 기존 4열을 유지하되 공간을 넓게 사용합니다. */
+@media (min-width: 960px) {
+  .guestbook-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(16px, 1.4vw, 24px);
+  }
+}
+
+/* 1200px 이상에서는 좌우 공간을 더 적극적으로 활용합니다. */
+@media (min-width: 1200px) {
+  .guestbook-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .gallery-section {
+    margin-top: 28px;
+  }
+}
+
+/* 대형 모니터 / 전체화면에서는 최대 6열로 넓게 배치합니다. */
+@media (min-width: 1580px) {
+  .guestbook-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+/* 너무 넓은 화면에서도 좌우가 비어 보이지 않도록 최대 폭을 확장합니다. */
+@media (min-width: 1920px) {
+  .guestbook-app {
+    max-width: 2200px;
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+}
+
+/* 모바일에서는 기존의 여유 있는 좌우 간격을 그대로 유지합니다. */
+@media (max-width: 639px) {
+  .guestbook-app {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
